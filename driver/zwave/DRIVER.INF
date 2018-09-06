@@ -1,0 +1,3 @@
+name=Z-Wave Driver
+version=0.1.3
+class=de.smahoo.homeos.driver.zwave.ZWaveDriver

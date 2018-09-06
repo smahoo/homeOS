@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cmd>
+    <execute device="FS20_ST_1" function="switch()"/>
+    <execute device="FS20_ST_1" function="switch()">
+        <parameter name="temperature" value="19.5"/>
+    </execute>
+</cmd>

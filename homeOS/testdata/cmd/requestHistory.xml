@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<request requestType="HISTORY" start="01.01.2013 00:00:00" end="10.02.2013 00:00:00">
+    <device deviceId="SIM_SENSOR_CLIMA_01"/>
+</request>

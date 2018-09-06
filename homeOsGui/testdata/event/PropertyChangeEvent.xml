@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mappingEvent>
+	<change>
+	    <msg>
+	        
+	    </msg>
+	    <device deviceId="FHT_TK_1D2B92">
+            <sensorwindow id="SENSOR_WINDOW@FHT_TK_1D2B92" name="FHT_TK_1D2B92">
+                <property name="isOpen" value="false"/>
+            </sensorwindow>
+        </device>
+	</change>
+</mappingEvent>

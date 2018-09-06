@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+java -cp .:/home/pi/homeos/lib/mail.jar:/home/pi/homeos/lib/nrjavaserial.jar:/home/pi/homeos/lib/homeos-core.jar:/home/pi/homeos/lib/mysql-connector-java-5.1.22-bin.jar com/smahoo/kernel/HomeOs --stop

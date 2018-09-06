@@ -1,0 +1,8 @@
+package de.smahoo.homeos.driver;
+
+public enum DriverMode {
+	DRIVER_MODE_NOT_INITIALIZED,
+	DRIVER_MODE_ADD_DEVICE,
+	DRIVER_MODE_REMOVE_DEVICE,
+	DRIVER_MODE_NORMAL;
+}

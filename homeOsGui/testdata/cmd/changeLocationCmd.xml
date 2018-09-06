@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cmd>    
+    <change>        
+     	<location id="loc0001">
+     	    <property name="name" value="Wohnzimmer"/>
+     	    <property name="type" value="LT_ROOM_LIVING"/>
+     	</location>  
+    </change>    
+</cmd>

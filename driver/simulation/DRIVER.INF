@@ -1,0 +1,3 @@
+name=Simulation Driver
+version=0.2.4
+class=de.smahoo.testing.simulation.SimDevDriver

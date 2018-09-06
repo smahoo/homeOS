@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cmd>    
+    <delete>
+        <device id="FS20_ST_1"/>     		   
+    </delete>
+</cmd>

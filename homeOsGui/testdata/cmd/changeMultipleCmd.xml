@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cmd>    
+    <change>
+        <device id="FS20_ST_1">
+     		<property name="name" value="Funkschaltsteckdose"/>     		
+     		<property name="location" value="loc0005"/>
+     	</device> 
+     	 <device id="FS20_ST_2">
+     		<property name="name" value="Funkschaltsteckdose2"/>     		
+     		<property name="location" value="loc0005"/>
+     	</device>
+     	<location id="loc0001">
+     	    <property name="name" value="Wohnzimmer"/>
+     	    <property name="type" value="LT_ROOM_LIVING" />
+     	</location>  
+    </change>
+    
+</cmd>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<home autoSaveConfig="false" systemId="smahoo-sample" xmlversion="1.0">
+    <locations>
+        <location id="loc0100" name="Single Family House" type="LT_AREA_HOUSE">
+            <location id="loc0101" name="Garden" type="LT_AREA_GARDEN"/>
+            <location id="loc0102" name="Front Yard" type="LT_AREA_YARD"/>
+
+            <location id="loc0110" name="1st Floor" 	type="LT_ROOM_CORRIDOR">
+                <location id="loc0111" name="Gallery" 	type="LT_ROOM_OTHER"/>
+                <location id="loc0112" name="Living Room" 	type="LT_ROOM_LIVING"/>
+                <location id="loc0113" name="Kitchen"		type="LT_ROOM_KITCHEN"/>
+                <location id="loc0114" name="Entrance"		type="LT_ROOM_CORRIDOR"/>
+            </location>
+            <location id="loc0120" name="2nd Floor" 	 type="LT_ROOM_CORRIDOR">
+                <location id="loc0121" name="Office" 	 type="LT_ROOM_OFFICE"/>
+                <location id="loc0122" name="Lounge" 	 type="LT_ROOM_LIVING"/>
+                <location id="loc0123" name="Child Room" type="LT_ROOM_CHILD"/>
+                <location id="loc0124" name="Rest Room"	 type="LT_ROOM_SLEEPING"/>
+                <location id="loc0125" name="Balcony"	 type="LT_AREA_BALCONY"/>
+            </location>
+            <location id="loc0120" name="3rd Floor" 	 type="LT_ROOM_CORRIDOR">
+                <location id="loc0121" name="Guest" 	 type="LT_ROOM_LIVING"/>
+                <location id="loc0122" name="Bath"  	 type="LT_ROOM_BATH"/>
+            </location>
+        </location>
+    </locations>
+
+    <service class="com.connctd.homeos.ConnectionService" enabled="true">
+
+        <configuration>
+            <connection serverAddress="api.connctd.com" serverPort="9009" useSsl="true"/>
+            <account unitId="203212bf-7750-44a3-ad3e-bb3d1a614271" token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMzc4NTQxZS1hOWU0LTRkNzItOTM1Yi1mZmY1YmM0ZjMxM2QiLCJpc3MiOiJodHRwOi8vY29ubmN0ZC5jb20iLCJqdGkiOiJlZDY4ZWU3MC1iNTY0LTRhZGQtYjFiYi00MTc1MWUzNmNjZjYiLCJleHAiOjE1MTA2NjI2ODksImlhdCI6MTQ3OTEyNjY4OSwic2NvcGVzIjpbIkFQUExJQ0FUSU9OU19SRUFEIiwiQVBQTElDQVRJT05TX01PRElGWSIsIlVTRVJTX1JFQUQiLCJQUk9GSUxFX1JFQUQiLCJHRU5FUklDX0NPTk5FQ1RPUiJdfQ.zEv2Qu241AG_oAQYl4vLiLc8hQRTc1bGLK8FLX4_UAw"/>
+        </configuration>
+
+        <things>
+            <thing thingId="" deviceId="">
+
+            </thing>
+        </things>
+
+    </service>
+
+    <database dbname="home" mode="DBMODE_OFF" password="m1st2r!" serverip="localhost" username="root"/>
+</home>

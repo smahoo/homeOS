@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cmd>
+
+	<driver class="de.smahoo.driver.zwave.ZWaveDriver">
+    	<set>
+    		<property name="CONTROLLER_MODE" value="CONTROLLER_MODE_RESET"/>
+    	</set>
+    </driver>
+    	
+    
+</cmd>

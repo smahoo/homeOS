@@ -1,0 +1,3 @@
+name=CUL Driver
+version=0.2.11
+class=de.smahoo.homeos.driver.cul.CulDriver

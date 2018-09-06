@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>XML HTTP REQUEST</title>
+<meta charset="UTF-8">
+</head>
+<body>
+<script type="text/javascript">
+	
+	var xmlHttpObject = false;
+	
+	function test() {				
+		
+	}
+	
+	function evalResult(){
+		if (xmlHttpObject.readyState==4 && xmlHttpObject.status==200){ 		
+			
+			xmlDoc=xmlHttpObject.responseXML;
+			
+			x=xmlDoc.getElementsByTagName("requestResult")[0];
+			
+			y = x.getElementsByTagName("devicelist")[0];
+			txt="<table><tr><td>Device Type</td><td>Device ID</td><td>Device Name</td><td>Location</td><td>Last Activity</td><td>Values</td>";
+			for(i=0; i<y.childNodes.length; i++){		
+				if (y.childNodes[i].nodeName != "#text"){
+					
+				txt+="<tr>";
+				txt+="<td>"+y.childNodes[i].nodeName+"</td>";
+				att = y.childNodes[i].attributes;
+				txt+="<td>"+att.getNamedItem("id").value+"</td>";		
+				if (att.getNamedItem("name")!= null){
+					txt+="<td>"+att.getNamedItem("name").value+"</td>";
+				} else {
+					txt+="<td>---</td>";
+				}
+				if (att.getNamedItem("location")!= null){
+					txt+="<td>"+att.getNamedItem("location").value+"</td>";
+				} else {
+					txt+="<td>---</td>";
+				}
+				if (att.getNamedItem("lastActivity")!= null){
+					txt+="<td>"+att.getNamedItem("lastActivity").value+"</td>";							
+				} else {
+					txt+="<td>---</td>";
+				}
+
+				txt+="</tr>";
+				
+				}
+			}
+				
+				
+			
+			
+			document.getElementById("myDiv").innerHTML=txt;
+		}
+	}
+	
+	function go() {		
+		if (xmlHttpObject.readyState==4 && xmlHttpObject.status==200){ 		
+			
+			xmlDoc=xmlHttpObject.responseXML;
+			
+			deviceList = xmlDoc.getElementsByTagName("devicelist")[0];
+			
+			txt="<table><tr><td>Device Type</td><td>Device ID</td><td>Device Name</td><td>Values</td>";
+			for(i=0; i<deviceList.childNodes.length; i++){		
+				if (deviceList.childNodes[i].nodeName != "#text"){			
+					childs = deviceList.childNodes[i].childNodes;
+					for (j=0; j<childs.length; j++){
+						if (childs[j].nodeName != "#text"){	
+							txt+="<tr>";
+							txt+="<td>"+childs[j].nodeName+"</td>";
+							
+							att = childs[j].attributes;
+							txt+="<td>"+att.getNamedItem("id").value+"</td>";		
+							if (att.getNamedItem("name")!= null){
+								txt+="<td>"+att.getNamedItem("name").value+"</td>";
+							} else {
+								txt+="<td>---</td>";
+							}
+
+							if (att.getNamedItem("lastActivity")!= null){
+								txt+="<td>"+att.getNamedItem("lastActivity").value+"</td>";							
+							} else {
+								txt+="<td>---</td>";
+							}
+							 if (childs[j].childNodes != null){
+                                console.log("adding values");
+                                txt += getProperties(childs[j].childNodes);
+                            } else {
+                             console.log("no childs");
+                                txt+="<td>---</td>";
+                            }
+
+
+
+							txt+="</tr>";
+						}
+					}
+				}
+			}
+			txt = txt+"</tr></table>";
+			document.getElementById("myDiv").innerHTML=txt;
+ 		}
+	}
+
+	function getProperties(values){
+	    txt = "";
+	    console.log(values);
+	    console.log(values.length);
+	    for ( i = 0; i < values.length; i++){
+	        console.log(i);
+	        if (values[i].nodeName != "#text"){
+	            child = values[i];
+	            console.log(child);
+                att = child.attributes;
+                console.log(att);
+                txt += "   "+att.getNamedItem("name").value+"="+att.getNamedItem("value").value;
+            }
+	    }
+
+	   return "<td>"+txt+"</td>";
+	}
+	
+	function loadDeviceList(){	
+		xmlHttpObject = new XMLHttpRequest();	
+	 	if (xmlHttpObject == null){
+			alert("xmlHttpObject is null");
+		} else {
+			command = '<?xml version="1.0" encoding="UTF-8" ?><request><devicelist/></request>';			
+			xmlHttpObject.open("POST",'',true); 
+			xmlHttpObject.onreadystatechange=go;			
+			xmlHttpObject.send(command);
+		}
+	}
+	
+	function load(deviceType){
+		xmlHttpObject = new XMLHttpRequest();	
+	 	if (xmlHttpObject == null){
+			alert("xmlHttpObject is null");
+		} else {
+			command = '<?xml version="1.0" encoding="UTF-8" ?><request><devicelist type="'+deviceType+'"/></request>';			
+			xmlHttpObject.open("POST",'',true); 
+			xmlHttpObject.onreadystatechange=evalResult;			
+			xmlHttpObject.send(command);
+		}
+	}
+</script>
+
+<button type="button" onclick="loadDeviceList()" 			ID=Button1>Complete Device List	</button>
+<button type="button" onclick="load('lamp')" 				ID=Button0>Lamp				</button>
+<button type="button" onclick="load('heating')" 			ID=Button2>Heating				</button>
+<button type="button" onclick="load('socket')" 				ID=Button3>Socket				</button>
+<button type="button" onclick="load('sensor_temperature')" 	ID=Button4>Sensor Temperature	</button>
+<button type="button" onclick="load('sensor_climate')" 		ID=Button5>Sensor Climate		</button>
+
+<div id="myDiv"></div>
+</body>
+
+</html>

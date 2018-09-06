@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cmd>
+
+	<driver class="de.smahoo.driver.zwave.ZWaveDriver">
+    	<set>
+    		<property name="CONTROLLER_MODE" value="CONTROLLER_MODE_ADD_DEVICE">
+    		    <param name="requestManufactureDetails" value="true"/>
+    		    <param name="requestVersionDetails" value="false"/>
+    		</property>    	
+    	</set>
+    </driver>
+    	
+    
+</cmd>

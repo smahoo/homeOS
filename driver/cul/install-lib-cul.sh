@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=lib/libcul.jar -DgroupId=de.runge -DartifactId=libcul -Dversion=1.0 -Dpackaging=jar

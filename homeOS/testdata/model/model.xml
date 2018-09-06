@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<requestResult>
+	<devicelist>
+    	<lamp id="" location="loc001" name="">
+        	<property name="isOn" value="false"/>
+    	</lamp> 
+	</devicelist>
+</requestResult>

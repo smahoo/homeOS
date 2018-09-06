@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <title>Air Control System Monitoring</title>
+    <meta charset="UTF-8">
+
+    <!-- scripts -->
+    <script type="text/javascript" src="./jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="./SysMonController.js"></script>
+    <script type="text/javascript" src="./homeos.js"></script>
+
+</head>
+<body>
+  <header>
+    <h1>smahoo AirControl System Monitor</h1>
+  </header>
+  <nav>
+        <a href="JavaScript: location.reload(true);">Click to Refresh</a>
+    </nav>
+    <section>
+        <!-- table-->
+        <table id="devicetable">
+            <caption><h2>Available Sensors</h2>
+            </caption>
+            <thead>
+                <tr>
+                    <th>Sensor ID</th>
+                    <th>
+                        Location <br><br>
+                        <form id="newLocationForm">
+                            <input type="text" id="newLocationInput" placeholder="new location">
+                            <select id='LocationTypeList'>
+                                <option value="LT_ROOM_LIVING">LT_ROOM_LIVING</option>
+                                <option value="LT_ROOM_KITCHEN">LT_ROOM_KITCHEN</option>
+                                <option value="LT_ROOM_BATH">LT_ROOM_BATH</option>
+                                <option value="LT_ROOM_CHILD">LT_ROOM_CHILD</option>
+                                <option value="LT_ROOM_SLEEPING">LT_ROOM_SLEEPING</option>
+                                <option value="LT_ROOM_STORAGE">LT_ROOM_STORAGE</option>
+                                <option value="LT_ROOM_BASEMENT">LT_ROOM_BASEMENT</option>
+                                <option value="LT_ROOM_CORRIDOR">LT_ROOM_CORRIDOR</option>
+                                <option value="LT_ROOM_OFFICE">LT_ROOM_OFFICE</option>
+                                <option value="LT_ROOM_RESTROOM">LT_ROOM_RESTROOM</option>
+                                <option value="LT_AREA_GARDEN">LT_AREA_GARDEN</option>
+                                <option value="LT_AREA_BALCONY">LT_AREA_BALCONY</option>
+                            </select>
+                            <button type="submit" value="saveNewLocation" onclick="$(window.eventbus).trigger('saveNewLocation');">create new location</button>
+                        </form>
+                    </th>
+                    <th>Successfully Contacted After Installation</th>
+                    <th>Last Data Refresh <br><br> Mark as out of date if older than:
+                    	<select onChange=$(window.eventbus).trigger("dataHasRefreshed"); id='refresh' style="height:19px; width:70px; text-align:center;">
+          					<option value="2">2mins</option>
+          					<option value="15" selected="selected">15mins</option>
+           					<option value="30">30mins</option>
+          					<option value="60">60mins</option>
+          					<option value="180">180mins</option>
+  						</select>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="sensortablebody">
+                <tr>
+                    <th>Row 1</th>
+                    <td>Cell b1</td>
+                    <td>Cell c1</td>
+                    <td>Cell d1</td>
+                </tr>
+                <tr>
+                    <th>Row 2</th>
+                    <td>Cell b2</td>
+                    <td>Cell c2</td>
+                    <td>Cell d2</td>
+                </tr>
+                <tr>
+                    <th>Row 3</th>
+                    <td>Cell b3</td>
+                    <td>Cell c3</td>
+                    <td>Cell d3</td>
+                </tr>
+                <tr>
+                    <th>Row 3</th>
+                    <td>Cell b3</td>
+                    <td>Cell c3</td>
+                    <td>Cell d3</td>
+                </tr>
+                <tr>
+                    <th>Row 3</th>
+                    <td>Cell b3</td>
+                    <td>Cell c3</td>
+                    <td>Cell d3</td>
+                </tr>
+                <tr>
+                    <th>Row 3</th>
+                    <td>Cell b3</td>
+                    <td>Cell c3</td>
+                    <td>Cell d3</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <footer>
+        <p>&copy; 2014 smahoo Solutions GmbH - All Rights Reserved</p>
+    </footer>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.hoss.loadDeviceList();
+        });
+    </script>
+</body>
+</html>

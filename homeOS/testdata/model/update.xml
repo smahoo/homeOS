@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<update>
+    <lamp id="lamp@FS20_ST_1">
+        <properties name="isOn" value="true"/>
+    </lamp>
+</update>

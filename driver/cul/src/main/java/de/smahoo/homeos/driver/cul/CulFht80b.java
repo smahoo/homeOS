@@ -18,8 +18,8 @@ import de.smahoo.homeos.devices.SensorTemperature;
 import de.smahoo.homeos.property.Property;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Fht80b;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Fht80b;
 
 public class CulFht80b extends CulFht80 implements SensorTemperature,HeatingRtc {
 	
@@ -81,8 +81,8 @@ public class CulFht80b extends CulFht80 implements SensorTemperature,HeatingRtc 
 	}
 	
 	/**
-	 * Will be called when properties of de.runge.cul.Device culDevice changed.
-	 * Applies properties of de.runge.cul.Device
+	 * Will be called when properties of de.smahoo.cul.Device culDevice changed.
+	 * Applies properties of de.smahoo.cul.Device
 	 */
 	@Override	
 	protected void applyProperties(){

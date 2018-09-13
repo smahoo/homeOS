@@ -21,8 +21,8 @@
 		</dependency>
 		
       	<dependency>
-        	<groupId>de.runge</groupId>
-        	<artifactId>libcul</artifactId>
+        	<groupId>de.smahoo</groupId>
+        	<artifactId>cul</artifactId>
         	<version>1.0</version>        	
       	</dependency>
     

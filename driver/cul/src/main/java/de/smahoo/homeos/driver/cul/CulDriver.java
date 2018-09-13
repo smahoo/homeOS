@@ -1,5 +1,6 @@
 package de.smahoo.homeos.driver.cul;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.smahoo.homeos.io.IOStreams;
+import de.smahoo.homeos.kernel.HomeOs;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,20 +24,20 @@ import de.smahoo.homeos.driver.DriverEvent;
 import de.smahoo.homeos.kernel.remote.result.RemoteResultItem;
 import de.smahoo.homeos.property.Property;
 
-import de.runge.cul.Cntrl;
-import de.runge.cul.ControllerEvent;
-import de.runge.cul.ControllerEventListener;
-import de.runge.cul.Device;
-import de.runge.cul.DeviceEvent;
-import de.runge.cul.DeviceEventListener;
-import de.runge.cul.Em1000;
-import de.runge.cul.FS20S;
-import de.runge.cul.Fht80;
-import de.runge.cul.Fht80b;
-import de.runge.cul.Fhttk;
-import de.runge.cul.Fs20s_md;
-import de.runge.cul.Hms100tf;
-import de.runge.cul.S300th;
+import de.smahoo.cul.Controller;
+import de.smahoo.cul.ControllerEvent;
+import de.smahoo.cul.ControllerEventListener;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.DeviceEvent;
+import de.smahoo.cul.DeviceEventListener;
+import de.smahoo.cul.Em1000;
+import de.smahoo.cul.FS20S;
+import de.smahoo.cul.Fht80;
+import de.smahoo.cul.Fht80b;
+import de.smahoo.cul.Fhttk;
+import de.smahoo.cul.Fs20s_md;
+import de.smahoo.cul.Hms100tf;
+import de.smahoo.cul.S300th;
 
 /*
  * ===================================================================
@@ -73,7 +76,7 @@ public final class CulDriver extends Driver{
 	
 	private HashMap<String, CulDevice> deviceList;
 	
-	protected Cntrl culController = null;
+	protected Controller culController = null;
 	
 	private boolean isIpBridgeUsed = false;
 	private boolean autoAddNewDevice = false;
@@ -82,22 +85,24 @@ public final class CulDriver extends Driver{
 	
 	private static final long MAX_SENSOR_OFFLINE_MILLIS = 60*60*1000; // 1h
 	private Date startTime = null;
+
+	private IOStreams ioStreams = null;
 	
 	public CulDriver(){
 		super();		
 		startTime = new Date();
 		deviceList = new HashMap<String, CulDevice>();
-		culController = new Cntrl();
+		culController = new Controller();
 		culController.addControllerEventListener(new ControllerEventListener() {
 			
-			@Override
+			
 			public void onControllerEvent(ControllerEvent evnt) {
 				evaluateControllerEvent(evnt);
 				
 			}
 		});
 		culController.addDeviceEventListener(new DeviceEventListener() {			
-			@Override
+			
 			public void onDeviceEvent(DeviceEvent evt) {
 				evaluateDeviceEvent(evt);				
 			}
@@ -139,45 +144,16 @@ public final class CulDriver extends Driver{
 			initDevices(elem.getChildNodes());
 		}
 				
-		// initialize CulCntrl
-		String comport = null;
-		int baud = 9600;
-		String address = null;
-		int serverPort = 0;
-		boolean ip = false;
-		
-		
-		if ( (elem.hasAttribute("serveraddress")||elem.hasAttribute("serverport")) 	&&	(elem.hasAttribute("serialport")||elem.hasAttribute("baudrate"))  ){
-			dispatchDriverEvent(new DriverEvent(EventType.ERROR_CONFIGURATION, this,"Only one connection allowed! Serial or IP."));
-			return false;
-		}
-		
-		if (elem.hasAttribute("serialport")){
-			comport = elem.getAttribute("serialport");
+
+		setConnection(elem.getElementsByTagName("connection"));
+		if (ioStreams != null) {
 			try {
-				baud = Integer.parseInt(elem.getAttribute("baudrate"));
+				culController.init(ioStreams.getInputStream(), ioStreams.getOutputStream(), 0);
 			} catch (Exception exc){
-				dispatchDriverEvent(new DriverEvent(EventType.ERROR_CONFIGURATION, this,"Invalid Baudrate ("+elem.getAttribute("baudrate")+")"));
-				return false;
-			}
-			ip=false;
-		}
-		
-		if (elem.hasAttribute("serveraddress")){
-			if (elem.hasAttribute("serverport")){
-				address = elem.getAttribute("serveraddress");
-				try {
-					serverPort = Integer.parseInt(elem.getAttribute("serverport"));
-				} catch (Exception exc){
-					dispatchDriverEvent(new DriverEvent(EventType.ERROR_CONFIGURATION, this,"Invalid Server port ("+elem.getAttribute("serverport")+")"));
-					return false;
-				}
-				ip=true;
-			} else {
-				dispatchDriverEvent(new DriverEvent(EventType.ERROR_CONFIGURATION, this,"Parameter serverport not given."));
-				return false;
+				dispatchDriverEvent(new DriverEvent(EventType.ERROR,this,"unable to initialize controller -> "+exc.getMessage()));
 			}
 		}
+
 		if (elem.hasAttribute("autoAddNewDevice")){
 			try {
 				autoAddNewDevice = Boolean.parseBoolean(elem.getAttribute("autoAddNewDevice"));
@@ -188,23 +164,60 @@ public final class CulDriver extends Driver{
 		}
 				
 		try {
-			if (!ip){
-				isIpBridgeUsed = false;
-				culController.init(comport,baud);
-			} else {
-				isIpBridgeUsed = true;
-				culController.initIp(address, serverPort);
-			}
+
 		} catch (Exception exc){
 			dispatchDriverEvent(new DriverEvent(EventType.ERROR,this,"unable to initialize controller -> "+exc.getMessage()));
 			exc.printStackTrace();
 			return false;
 		}
-		
-		//dispatchDriverEvent(new DriverEvent(EventType.READY, this,"Driver "+this.getName()+" "+getVersion()+" initialized"));
 		return true;
 	}
-	
+
+	private void setConnection(NodeList nodeList){
+		Element tmp;
+		for (int i = 0; i<nodeList.getLength(); i++){
+			if (nodeList.item(i) instanceof Element){
+				tmp = (Element)nodeList.item(i);
+				try {
+					ioStreams = connect(tmp);
+				} catch (Exception exc){
+					exc.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private IOStreams connect(Element elem) throws IOException {
+		IOStreams res = null;
+
+		if (elem.hasAttribute("type")){
+			if (elem.getAttribute("type").equalsIgnoreCase("IO_TYPE_SERIAL")){
+				if (!elem.hasAttribute("portname")) {
+					throw new IOException("driver configuration does not contain attribute portname for connection type IO_TYPE_SERIAL");
+				}
+				if (!elem.hasAttribute("baudrate")){
+					throw new IOException("driver configuration does not contain attribute baudrate for connection type IO_TYPE_SERIAL");
+				}
+				String portName = elem.getAttribute("portname");
+				int baud;
+				try {
+					baud = Integer.parseInt(elem.getAttribute("baudrate"));
+				} catch (Exception exc){
+					throw new IOException("'"+elem.getAttribute("baudrate")+"' is not a valid baudrate!");
+				}
+
+				res = HomeOs.getInstance().getIoManager().openComPort(portName, baud);
+
+			}
+		} else {
+			throw new IOException("driver configuration does not contain connection type. Unable to initialize the connection.");
+		}
+
+
+		return res;
+	}
+
+
 	@Override
 	public void startLearnMode(){
 		
@@ -279,47 +292,47 @@ public final class CulDriver extends Driver{
 		}
 		
 		switch (deviceType){
-		case Cntrl.DEVICETYPE_FS20_DI :
-		case Cntrl.DEVICETYPE_FS20_ST :
+		case Controller.DEVICETYPE_FS20_DI :
+		case Controller.DEVICETYPE_FS20_ST :
 				String channelStr = getPropertyValue(elem,"channel");
 				int channel = 0;
 				if (channelStr != null){
 					channel = Integer.parseInt(channelStr);
 				}
-				if (deviceType == Cntrl.DEVICETYPE_FS20_ST){
+				if (deviceType == Controller.DEVICETYPE_FS20_ST){
 					device = generateFs20st(deviceType, id, address, channel);
 				}
-				if (deviceType == Cntrl.DEVICETYPE_FS20_DI){
+				if (deviceType == Controller.DEVICETYPE_FS20_DI){
 					device = generateFs20di(deviceType, id, address, channel);
 				}
 				break;
 										
-		case Cntrl.DEVICETYPE_WS300_S300TH 	: 
+		case Controller.DEVICETYPE_WS300_S300TH 	: 
 			device = generateS300th(deviceType,id,address);
 			break;
-		case Cntrl.DEVICETYPE_FS20_S	:
+		case Controller.DEVICETYPE_FS20_S	:
 			device = generateFs20s(deviceType,id, address);
 			break;
-		case Cntrl.DEVICETYPE_HMS_100TF		: 
+		case Controller.DEVICETYPE_HMS_100TF		: 
 			device = generateHms100tf(deviceType,id,address); 
 			break;
-		case Cntrl.DEVICETYPE_FHT_TK			: 
+		case Controller.DEVICETYPE_FHT_TK			: 
 			device = generateFhttk(deviceType,id,address);
 			break;	
-		case Cntrl.DEVICETYPE_FHT_80:
+		case Controller.DEVICETYPE_FHT_80:
 			device = generateFht80(deviceType,id,address);
 			break;
-		case Cntrl.DEVICETYPE_FHT_80B			:
+		case Controller.DEVICETYPE_FHT_80B			:
 			device = generateFht80b(deviceType,id,address);
 			break;
 		
-		case Cntrl.DEVICETYPE_FS20_IRF :
+		case Controller.DEVICETYPE_FS20_IRF :
 			device = generateFs20irf(deviceType,id,address);
 			break;
-		case Cntrl.DEVICETYPE_FS20_S_MD:
+		case Controller.DEVICETYPE_FS20_S_MD:
 			device = generateFs20s_md(deviceType, id, address);
 			break;
-		case Cntrl.DEVICETYPE_EM_1000:
+		case Controller.DEVICETYPE_EM_1000:
 			device = generateEm1000(deviceType, id, address);
 			break;
 		}
@@ -367,13 +380,7 @@ public final class CulDriver extends Driver{
 		elem.setAttribute("class", this.getClass().getName());
 		elem.setAttribute("autoAddNewDevice",""+this.autoAddNewDevice);
 		
-		if (isIpBridgeUsed){
-			elem.setAttribute("serverport",""+culController.getServerPort());
-			elem.setAttribute("serveraddress",culController.getServerAddress());
-		} else {
-			elem.setAttribute("serialport",culController.getCommPort());
-			elem.setAttribute("baudrate",""+culController.getBaudrate());
-		}
+
 		for (CulDevice device : this.deviceList.values()){
 			elem.appendChild(generateXmlElement(doc,device));
 		}
@@ -384,7 +391,7 @@ public final class CulDriver extends Driver{
 
 	protected boolean init(){
 		try {
-			culController.init("COM7",9600);
+			//culController.init("COM7",9600);
 		} catch (Exception exception){
 			exception.printStackTrace();
 			dispatchDriverEvent(new DriverEvent(EventType.ERROR, this, exception.getMessage()));
@@ -408,8 +415,8 @@ public final class CulDriver extends Driver{
 		elem.setAttribute("deviceid",device.getDeviceId());
 		elem.setAttribute("name", device.getName());
 		elem.setAttribute("address",device.getAddress());
-		elem.setAttribute("devicefamily",""+device.culDevice.getDeviceFamily());
-		elem.setAttribute("devicetype", ""+device.culDevice.getDeviceType());
+		//elem.setAttribute("devicefamily",""+device.culDevice getDeviceFamily());
+		//elem.setAttribute("devicetype", ""+device.culDevice.getDeviceType());
 		if (device.getLocation() != null){
 			//elem.setAttribute("location",device.getLocation().getName());
 			elem.setAttribute("location",device.getLocation().getId());
@@ -471,7 +478,7 @@ public final class CulDriver extends Driver{
 			}
 			
 		}		
-		return generateFs20st(Cntrl.DEVICETYPE_FS20_ST,"FS20_ST_"+tmp,"6ACA",0);
+		return generateFs20st(Controller.DEVICETYPE_FS20_ST,"FS20_ST_"+tmp,"6ACA",0);
 	}
 	
 	protected CulDevice generateFs20irf(int deviceType, String deviceId, String address){
@@ -508,7 +515,7 @@ public final class CulDriver extends Driver{
 				tmp = "0"+tmp;
 			}			
 		}
-		return generateFs20di(Cntrl.DEVICETYPE_FS20_DI,"FS20_DI_"+tmp,"6ACA",2);
+		return generateFs20di(Controller.DEVICETYPE_FS20_DI,"FS20_DI_"+tmp,"6ACA",2);
 	}
 	
 	protected CulDevice generateFs20di(int deviceType, String deviceId, String address, int channel){
@@ -554,14 +561,14 @@ public final class CulDriver extends Driver{
 			}
 			CulDevice device = null;
 			switch (evt.getDevice().getDeviceType()) {
-			  case Cntrl.DEVICETYPE_WS300_S300TH 	: device = generateS300th((S300th)evt.getDevice());	break;
-			  case Cntrl.DEVICETYPE_FHT_80			: device = generateFht80((Fht80)evt.getDevice()); break;
-			  case Cntrl.DEVICETYPE_FHT_80B			: device = generateFht80b((Fht80b)evt.getDevice()); 		break;
-			  case Cntrl.DEVICETYPE_HMS_100TF		: device = generateHms100tf((Hms100tf)evt.getDevice()); break;
-			  case Cntrl.DEVICETYPE_FHT_TK			: device = generateFhttk((Fhttk)evt.getDevice()); 		break;
-			  case Cntrl.DEVICETYPE_FS20_S			: device = generateFs20s((FS20S)evt.getDevice()); 		break;
-			  case Cntrl.DEVICETYPE_FS20_S_MD		: device = generateFs20s_md((Fs20s_md)evt.getDevice()); break;
-			  case Cntrl.DEVICETYPE_EM_1000			: device = generateEm1000((Em1000)evt.getDevice()); break;
+			  case Controller.DEVICETYPE_WS300_S300TH 	: device = generateS300th((S300th)evt.getDevice());	break;
+			  case Controller.DEVICETYPE_FHT_80			: device = generateFht80((Fht80)evt.getDevice()); break;
+			  case Controller.DEVICETYPE_FHT_80B			: device = generateFht80b((Fht80b)evt.getDevice()); 		break;
+			  case Controller.DEVICETYPE_HMS_100TF		: device = generateHms100tf((Hms100tf)evt.getDevice()); break;
+			  case Controller.DEVICETYPE_FHT_TK			: device = generateFhttk((Fhttk)evt.getDevice()); 		break;
+			  case Controller.DEVICETYPE_FS20_S			: device = generateFs20s((FS20S)evt.getDevice()); 		break;
+			  case Controller.DEVICETYPE_FS20_S_MD		: device = generateFs20s_md((Fs20s_md)evt.getDevice()); break;
+			  case Controller.DEVICETYPE_EM_1000			: device = generateEm1000((Em1000)evt.getDevice()); break;
 			}
 			
 			if (device != null){
@@ -643,8 +650,6 @@ public final class CulDriver extends Driver{
 		device = new CulFs20s(fs20s);
 		device.applyProperties();		
 		device.addDeviceEventListener(new de.smahoo.homeos.device.DeviceEventListener() {
-			
-			@Override
 			public void onDeviceEvent(de.smahoo.homeos.device.DeviceEvent event) {
 				evaluateFs20sEvent(event);
 				

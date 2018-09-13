@@ -10,8 +10,8 @@ import de.smahoo.homeos.devices.SensorClimate;
 import de.smahoo.homeos.property.Property;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.S300th;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.S300th;
 
 public class CulS300th extends CulDevice implements SensorClimate{
 	

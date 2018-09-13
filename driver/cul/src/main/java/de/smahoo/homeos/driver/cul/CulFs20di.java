@@ -14,8 +14,8 @@ import de.smahoo.homeos.device.SimpleDeviceFunction;
 import de.smahoo.homeos.devices.Dimmable;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Fs20di;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Fs20di;
 
 public class CulFs20di extends CulFs20st implements Dimmable{
 

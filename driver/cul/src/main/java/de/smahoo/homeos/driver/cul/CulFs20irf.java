@@ -10,8 +10,8 @@ import de.smahoo.homeos.device.ParameterizedDeviceFunction;
 import de.smahoo.homeos.device.PhysicalDeviceFunction;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.FS20irf;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.FS20irf;
 
 public class CulFs20irf extends CulDevice{
 

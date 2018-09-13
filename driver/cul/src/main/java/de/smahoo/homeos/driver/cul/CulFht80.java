@@ -13,8 +13,8 @@ import de.smahoo.homeos.devices.HeatingRtc;
 import de.smahoo.homeos.property.Property;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Fht80;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Fht80;
 
 public class CulFht80 extends CulDevice implements HeatingRadiator {
 	
@@ -43,8 +43,8 @@ public class CulFht80 extends CulDevice implements HeatingRadiator {
 	}
 	
 	/**
-	 * Will be called when properties of de.runge.cul.Device culDevice changed.
-	 * Applies properties of de.runge.cul.Device
+	 * Will be called when properties of de.smahoo.cul.Device culDevice changed.
+	 * Applies properties of de.smahoo.cul.Device
 	 */
 	@Override	
 	protected void applyProperties(){

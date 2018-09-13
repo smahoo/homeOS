@@ -8,8 +8,8 @@ import de.smahoo.homeos.device.PhysicalDeviceFunction;
 import de.smahoo.homeos.devices.SensorTemperature;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Hms100tf;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Hms100tf;
 
 public class CulHms100t extends CulDevice implements SensorTemperature{
 	

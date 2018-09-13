@@ -10,8 +10,8 @@ import de.smahoo.homeos.devices.Switch;
 import de.smahoo.homeos.property.Property;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.FS20S;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.FS20S;
 
 
 public class CulFs20s extends CulDevice implements Switch{

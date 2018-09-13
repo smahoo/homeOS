@@ -15,8 +15,8 @@ import de.smahoo.homeos.device.PhysicalDeviceFunction;
 import de.smahoo.homeos.devices.MeterElectricity;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Em1000;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Em1000;
 
 public class CulEm1000 extends CulDevice implements MeterElectricity{
 	

@@ -10,8 +10,8 @@ import de.smahoo.homeos.devices.SensorWindow;
 import de.smahoo.homeos.property.Property;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Fhttk;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Fhttk;
 
 public class CulFhttk extends CulDevice implements SensorWindow{
 	

@@ -14,8 +14,8 @@ import de.smahoo.homeos.devices.Socket;
 import de.smahoo.homeos.property.Property;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.FS20ST;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.FS20ST;
 
 public class CulFs20st extends CulDevice implements Socket {
 	

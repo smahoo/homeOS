@@ -8,8 +8,8 @@ import de.smahoo.homeos.device.PhysicalDeviceFunction;
 import de.smahoo.homeos.devices.SensorClimate;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Hms100tf;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Hms100tf;
 
 public class CulHms100tf extends CulDevice implements SensorClimate{
 	
@@ -94,8 +94,7 @@ public class CulHms100tf extends CulDevice implements SensorClimate{
 		return 0.0;
 	}
 
-	
-	@Override
+
 	public boolean isOn(){
 		return isAvailable();
 	}

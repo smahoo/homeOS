@@ -12,8 +12,8 @@ import de.smahoo.homeos.devices.SensorMotion;
 import de.smahoo.homeos.property.Property;
 import de.smahoo.homeos.property.PropertyType;
 
-import de.runge.cul.Device;
-import de.runge.cul.Fs20s_md;
+import de.smahoo.cul.Device;
+import de.smahoo.cul.Fs20s_md;
 
 public class CulFs20sMd extends CulDevice implements SensorMotion{
 

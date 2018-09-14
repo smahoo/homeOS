@@ -2,7 +2,6 @@ package de.smahoo.homeos.kernel.remote;
 
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -12,20 +11,11 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
 
 
-
-
-
-
-
-
-
-
-
+import de.smahoo.homeos.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -33,7 +23,6 @@ import de.smahoo.homeos.common.Event;
 import de.smahoo.homeos.common.EventListener;
 import de.smahoo.homeos.common.EventType;
 import de.smahoo.homeos.kernel.remote.result.RemoteResult;
-import de.smahoo.homeos.utils.xml.XmlUtils;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -118,7 +107,7 @@ public class RemoteServer {
 	protected String processXml(String str){		
 		Document xmlDoc=null;
 		try {
-			xmlDoc = XmlUtils.parseDoc(str);	
+			xmlDoc = XmlUtils.parseDoc(str);
 		} catch (Exception exc){
 			return XmlUtils.xml2String(generateXmlErrorMessage(exc.getMessage()));
 		}

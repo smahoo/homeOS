@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -34,8 +33,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -138,7 +135,7 @@ public class PanelCommandDetails extends JPanel{
 		Document doc;
 		try {
 			doc = XmlUtils.parseDoc(text);
-			System.out.println("das angekommene DOC "+XmlUtils.xml2String(doc));
+			System.out.println("das angekommene DOC "+ XmlUtils.xml2String(doc));
 		} catch (Exception exc){
 			exc.printStackTrace();
 			return null;

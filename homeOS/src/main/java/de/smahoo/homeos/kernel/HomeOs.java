@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import de.smahoo.homeos.service.*;
 import de.smahoo.homeos.utils.Logger;
+import de.smahoo.homeos.utils.xml.XmlUtils;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,7 +49,6 @@ import de.smahoo.homeos.location.LocationEvent;
 import de.smahoo.homeos.location.LocationEventListener;
 import de.smahoo.homeos.location.LocationManager;
 import de.smahoo.homeos.utils.JarResources;
-import de.smahoo.homeos.utils.xml.XmlUtils;
 
 
 /*
@@ -158,7 +158,7 @@ public class HomeOs extends Thread{
 	private static final int DEFAULT_REMOTE_PORT = 2020;
 	
 	private static HomeOs instance = null;
-	private static String strCompany = "smahoo Solutions GmbH & Co. KG";
+	private static String strCompany = "smahoo";
 	private static String strName 	 = "Home Operating System";
 	private static String strVersion = "0.2.30";	// VERSION.SUBVERSION.BUILDNUMBER
 	

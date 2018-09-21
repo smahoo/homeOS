@@ -714,11 +714,18 @@ public class HomeOs extends Thread{
 	}
 	
 	public void initDriver(Driver driver){
-		System.out.print("initializing Driver "+driver.getName()+" "+driver.getVersion()+".......");
-		if (driver.init(cfgManager.getDriverConfiguration(driver.getClass().getCanonicalName()))){
-			System.out.println("OK");
+
+		Element driverConfig = cfgManager.getDriverConfiguration(driver.getClass().getCanonicalName());
+
+		if (driverConfig != null){
+				System.out.print("initializing Driver "+driver.getName()+" "+driver.getVersion()+".......");
+				if (driver.init(driverConfig)){
+					System.out.println("OK");
+				} else {
+					System.out.println("ERROR");
+				}
 		} else {
-			System.out.println("ERROR");
+			System.out.println("no config found for Driver "+driver.getName()+"! Driver is not initialized");
 		}
 	}
 	
@@ -731,15 +738,12 @@ public class HomeOs extends Thread{
 			connection.setRequestMethod( "POST" );			
 			connection.setDoInput( true );
 			connection.setDoOutput( true );
-		//	connection.setUseCaches( false );			
 			connection.setRequestProperty( "Content-Type","text/xml" );
 			connection.setRequestProperty( "Content-Length", String.valueOf(cmd.length()) );
 						
 			OutputStreamWriter writer = new OutputStreamWriter( connection.getOutputStream() );
 			writer.write(cmd);
 			writer.flush();
-			//BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			
 			
 			InputStreamReader in = new InputStreamReader(connection.getInputStream());
 			StringBuffer buffer = new StringBuffer();
@@ -747,7 +751,6 @@ public class HomeOs extends Thread{
 			while ((read = in.read()) !=-1 ){
 				buffer.append((char)read);
 			}
-		
 		
 			writer.close();
 			in.close();			

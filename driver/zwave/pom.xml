@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.smahoo</groupId>
+	<groupId>de.smahoo.homeos</groupId>
 	<artifactId>driverzwave</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 	<name>smahoo HomeOS - Driver for ZWave</name>
 
@@ -15,14 +15,19 @@
             <version>0.3.82</version>
       	</dependency>
 		<dependency>
-			<groupId>de.smahoo</groupId>
+			<groupId>de.smahoo.jwave</groupId>
+			<artifactId>specification</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.smahoo.homeos</groupId>
 			<artifactId>common</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>		
 		<dependency>
-    		<groupId>de.smahoo</groupId>
+    		<groupId>de.smahoo.homeos</groupId>
     		<artifactId>homeos</artifactId>
-    		<version>1.0-SNAPSHOT</version>
+    		<version>1.0</version>
 		</dependency>
 		
       	
@@ -37,47 +42,79 @@
           			<include>DRIVER.INF</include>          
         		</includes>
       		</resource>
-			<resource>
-				<directory>./src/main/resources</directory>
-				<includes>
-					<include>cmd_classes.xml</include>
-				</includes>
-			</resource>
+
     	</resources>    
     	<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<artifactItems>
+						<artifactItem>
+							<groupId>de.smahoo.jwave</groupId>
+							<artifactId>libjwave</artifactId>
+							<version>0.3.82</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<destFileName>libjwave.jar</destFileName>
+						</artifactItem>
+						<artifactItem>
+							<groupId>de.smahoo.jwave</groupId>
+							<artifactId>specification</artifactId>
+							<version>1.0</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						<destFileName>jwavespec.jar</destFileName>
+					</artifactItem>
+					</artifactItems>
 				</configuration>
 			</plugin>
-    		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4.1</version>
-				<configuration>
-					<!-- get all project dependencies -->
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>					
-				</configuration>
+
+
+			<plugin>
+				<groupId>com.coderplus.maven.plugins</groupId>
+				<artifactId>copy-rename-maven-plugin</artifactId>
+				<version>1.0</version>
 				<executions>
-				  <execution>
-					<id>make-assembly</id>
-					<phase>package</phase>
-					<goals>
-						<goal>single</goal>
-					</goals>
-				  </execution>
+					<execution>
+						<id>copy-file</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<fileSets>
+								<fileSet>
+									<sourceFile>${project.build.directory}/lib/libjwave.jar</sourceFile>
+									<destinationFile>deployment/lib/libjwave.jar</destinationFile>
+								</fileSet>
+								<fileSet>
+									<sourceFile>${project.build.directory}/lib/jwavespec.jar</sourceFile>
+									<destinationFile>deployment/lib/jwavespec.jar</destinationFile>
+								</fileSet>
+								<fileSet>
+									<sourceFile>${project.build.directory}/driverzwave-1.0.jar</sourceFile>
+									<destinationFile>deployment/driver/driverzwave.jar</destinationFile>
+								</fileSet>
+							</fileSets>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
-
-
-
   	</build>	
 
 	

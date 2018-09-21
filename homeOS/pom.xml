@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.smahoo</groupId>
+	<groupId>de.smahoo.homeos</groupId>
 	<artifactId>homeos</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 	<name>smahoo HomeOS</name>
 
 	
 	<dependencies>
 		<dependency>
-			<groupId>de.smahoo</groupId>
+			<groupId>de.smahoo.homeos</groupId>
 			<artifactId>common</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>		
 		<dependency>
     		<groupId>com.neuronrobotics</groupId>
@@ -34,25 +34,43 @@
 	<build>
 		
 			<plugins>
-    			<plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4.1</version>
-					<configuration>					
-						<descriptorRefs>
-							<descriptorRef>jar-with-dependencies</descriptorRef>
-						</descriptorRefs>					
-					</configuration>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.1.1</version>
 					<executions>
-				  		<execution>
-							<id>make-assembly</id>
+						<execution>
+							<id>copy</id>
 							<phase>package</phase>
 							<goals>
-								<goal>single</goal>
+								<goal>copy</goal>
 							</goals>
-				  		</execution>
+						</execution>
 					</executions>
+					<configuration>
+						<artifactItems>
+							<artifactItem>
+								<groupId>com.neuronrobotics</groupId>
+								<artifactId>nrjavaserial</artifactId>
+								<version>3.7.5</version>
+								<type>jar</type>
+								<overWrite>false</overWrite>
+								<outputDirectory>${project.build.directory}/lib</outputDirectory>
+								<destFileName>nrjavaserial.jar</destFileName>
+							</artifactItem>
+							<artifactItem>
+								<groupId>javax.mail</groupId>
+								<artifactId>mail</artifactId>
+								<version>1.4</version>
+								<type>jar</type>
+								<overWrite>false</overWrite>
+								<outputDirectory>${project.build.directory}/lib</outputDirectory>
+								<destFileName>xmail.jar</destFileName>
+							</artifactItem>
+						</artifactItems>
+					</configuration>
 				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>

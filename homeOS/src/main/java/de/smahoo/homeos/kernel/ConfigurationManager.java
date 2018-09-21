@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import de.smahoo.homeos.service.Service;
 import de.smahoo.homeos.service.ServiceManager;
+import de.smahoo.homeos.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -18,7 +19,6 @@ import de.smahoo.homeos.driver.Driver;
 import de.smahoo.homeos.driver.DriverManager;
 import de.smahoo.homeos.location.Location;
 import de.smahoo.homeos.location.LocationManager;
-import de.smahoo.homeos.utils.xml.XmlUtils;
 
 public class ConfigurationManager {
 
@@ -175,7 +175,7 @@ public class ConfigurationManager {
 	}
 	
 	protected Document generateConfigXml(){
-		Document doc =XmlUtils.createDocument();		
+		Document doc = XmlUtils.createDocument();
 		doc.appendChild(getConfigElement(doc));		
 		return doc;
 	}

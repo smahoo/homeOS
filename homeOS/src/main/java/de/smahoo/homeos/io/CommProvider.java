@@ -3,21 +3,27 @@ package de.smahoo.homeos.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Enumeration;
 
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
+import sun.nio.cs.ext.COMPOUND_TEXT;
 
 public class CommProvider {
 	
 	public IOStreams openComm(String portName, int baudrate) throws IOException{		
-		
+
+
 		CommPort commPort;		
 		CommPortIdentifier portIdentifier = null;
-	    
+		Enumeration<CommPortIdentifier> ports = CommPortIdentifier.getPortIdentifiers();
+
 		try {
-	        	portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+
+
+	        portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
 	    } catch (NoSuchPortException exc){
 	        	exc.printStackTrace();
 	        	throw new IOException("CommPort with the name '"+portName+"' is not available! ",exc);

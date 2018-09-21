@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import de.smahoo.homeos.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -21,7 +22,6 @@ import de.smahoo.homeos.kernel.remote.result.DeviceRequestResultItem;
 import de.smahoo.homeos.kernel.remote.result.cmd.DeleteCmdResultItem;
 import de.smahoo.homeos.kernel.remote.result.request.LocationRequestResultItem;
 import de.smahoo.homeos.location.LocationEvent;
-import de.smahoo.homeos.utils.xml.XmlUtils;
 
 public class CallBackServer extends Thread{
 

@@ -41,7 +41,7 @@ import de.smahoo.cul.S300th;
 
 /*
  * ===================================================================
- * 							CHNAGE HISTORY
+ * 							CHANGE HISTORY
  * ===================================================================
  * 
  * 0.2.11   fixed bug: when writing config, location name instead of location id was saved
@@ -55,7 +55,7 @@ import de.smahoo.cul.S300th;
  * 
  * 0.2.6    activity timestamp will be set with new received message
  *          message cache is disabled to prevent memory leak
- * 
+ *
  * 0.2.5    fixed bug with HMS100TF update
  * 
  * 0.2.4	auto add of new devices can be set due to attribute in config element -> autoAddNewDevice
@@ -72,13 +72,11 @@ public final class CulDriver extends Driver{
 	
 	private static final String DRIVERNAME  = "CUL";
 	private static final String VERSION     = "0.2.11";
-	private static final String COMPANYNAME = "smahoo Solutions GmbH & Co. KG";
+	private static final String COMPANYNAME = "smahoo";
 	
 	private HashMap<String, CulDevice> deviceList;
 	
 	protected Controller culController = null;
-	
-	private boolean isIpBridgeUsed = false;
 	private boolean autoAddNewDevice = false;
 	
 	private Timer availableTimer;
@@ -140,18 +138,25 @@ public final class CulDriver extends Driver{
 			return init();			
 		}
 		
-		if (elem.hasChildNodes()){
-			initDevices(elem.getChildNodes());
-		}
-				
+
+
 
 		setConnection(elem.getElementsByTagName("connection"));
+
 		if (ioStreams != null) {
 			try {
-				culController.init(ioStreams.getInputStream(), ioStreams.getOutputStream(), 0);
+
+				culController.init(ioStreams.getInputStream(), ioStreams.getOutputStream());
+
 			} catch (Exception exc){
 				dispatchDriverEvent(new DriverEvent(EventType.ERROR,this,"unable to initialize controller -> "+exc.getMessage()));
 			}
+		} else {
+			dispatchDriverEvent(new DriverEvent(EventType.ERROR,this,"unable to initialize controller -> Connection could not be established"));
+			return false;
+		}
+		if (elem.hasChildNodes()){
+			initDevices(elem.getElementsByTagName("device"));
 		}
 
 		if (elem.hasAttribute("autoAddNewDevice")){
@@ -259,11 +264,15 @@ public final class CulDriver extends Driver{
 		
 	}
 	
-	protected void initDevices(NodeList list){		
+	protected void initDevices(NodeList list){
+		Element elem;
 		for (int i = 0; i<list.getLength(); i++){		
 			Node n = list.item(i);
 			if (n instanceof Element){
-				initDevice((Element)n);
+				elem = (Element)n;
+				if (elem.getTagName().equals("device")) {
+					initDevice((Element) n);
+				}
 			}
 		}
 	}
@@ -390,24 +399,9 @@ public final class CulDriver extends Driver{
 	
 
 	protected boolean init(){
-		try {
-			//culController.init("COM7",9600);
-		} catch (Exception exception){
-			exception.printStackTrace();
-			dispatchDriverEvent(new DriverEvent(EventType.ERROR, this, exception.getMessage()));
-			return false;
-		}
-		CulDevice fs20st = generateFs20st();
-		getDeviceManager().addDevice(fs20st,this);	
-		getDeviceManager().addDevice(generateFs20di(),this);
-		try {
-			fs20st.getFunction("switch").execute();
-		} catch (Exception exc){
-			exc.printStackTrace();
-		}
-		return true;
+		return false;
 	}
-	
+
 	private Element generateXmlElement(Document doc, CulDevice device){
 		Element elem = null;
 		elem = doc.createElement("device");
@@ -536,6 +530,7 @@ public final class CulDriver extends Driver{
 		switch (evnt.getEventType()){
 		case ControllerEvent.ERROR :
 			this.disableDevices();
+			System.out.println("Got error from controller "+ evnt.getMessage());
 			dispatchDriverEvent(new DriverEvent(EventType.ERROR,this, evnt.getMessage())); 
 			break;
 		case ControllerEvent.ERROR_CONNECTION_LOST :			

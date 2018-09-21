@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.smahoo.homeos</groupId>
+	<groupId>de.smahoo.homeos.homeos</groupId>
 	<artifactId>suite</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	<name>smahoo HomeOS - All</name>
 	
@@ -61,27 +61,15 @@
             			<configuration>
             				<fileSets>
   								<fileSet>
-    								<sourceFile>driver/cul/target/drivercul-1.0-SNAPSHOT-jar-with-dependencies.jar</sourceFile>
-              						<destinationFile>deployment/driver/drivercul.jar</destinationFile>
-  								</fileSet>
-  								<fileSet>
-    								<sourceFile>driver/zwave/target/driverzwave-1.0-SNAPSHOT.jar</sourceFile>
-              						<destinationFile>deployment/driver/driverzwave.jar</destinationFile>
-  								</fileSet>
-								<fileSet>
-									<sourceFile>driver/simulation/target/driversim-1.0-SNAPSHOT.jar</sourceFile>
-									<destinationFile>deployment/driver/driversim.jar</destinationFile>
-								</fileSet>
- 								<fileSet>
-    								<sourceFile>homeOS/target/homeos-1.0-SNAPSHOT.jar</sourceFile>
+    								<sourceFile>homeOS/target/homeos-1.0.jar</sourceFile>
     								<destinationFile>deployment/lib/homeos-core.jar</destinationFile>
   								</fileSet>
 								<fileSet>
-									<sourceFile>common/target/common-1.0-SNAPSHOT.jar</sourceFile>
+									<sourceFile>common/target/common-1.0.jar</sourceFile>
 									<destinationFile>deployment/lib/common.jar</destinationFile>
 								</fileSet>
 								<fileSet>
-									<sourceFile>homeOsGui/target/testgui-1.0-SNAPSHOT.jar</sourceFile>
+									<sourceFile>homeOsGui/target/testgui-1.0.jar</sourceFile>
 									<destinationFile>deployment/lib/testgui.jar</destinationFile>
 								</fileSet>
 								<fileSet>
@@ -93,18 +81,17 @@
 									<destinationFile>deployment/startHomeOs_TestGUI_sample.sh</destinationFile>
 								</fileSet>
 								<fileSet>
-									<sourceFile>simulation/target/simulation-1.0-SNAPSHOT.jar</sourceFile>
+									<sourceFile>simulation/target/simulation-1.0.jar</sourceFile>
 									<destinationFile>deployment/lib/libsim.jar</destinationFile>
 								</fileSet>
-                <fileSet>
-                  <sourceFile>services/connctd/target/connection-1.0-SNAPSHOT-jar-with-dependencies.jar</sourceFile>
-                  <destinationFile>deployment/services/serviceConnctd.jar</destinationFile>
-                </fileSet>
 							</fileSets>
             			</configuration>
           			</execution>
         		</executions>
-      		</plugin> 
+      		</plugin>
+
+
+
           <!-- COPY HTML-FOLDER TO DEPLOYMENT AFTER BUILD -->
       		<plugin>
             	<artifactId>maven-resources-plugin</artifactId>
@@ -169,7 +156,42 @@
 							<outputDirectory>deployment/lib</outputDirectory>
 							<resources>
 								<resource>
-									<directory>homeOs/lib</directory>
+									<directory>homeOs/target/lib</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<!-- Copy Driver Z-Wave with dependencies -->
+					<execution>
+						<id>copy-driver-zwave</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+
+						<configuration>
+							<outputDirectory>deployment</outputDirectory>
+							<resources>
+								<resource>
+									<directory>driver/zwave/deployment</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+
+					<!-- Copy Driver Z-Wave with dependencies -->
+					<execution>
+						<id>copy-driver-cul</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+
+						<configuration>
+							<outputDirectory>deployment</outputDirectory>
+							<resources>
+								<resource>
+									<directory>driver/cul/deployment</directory>
 								</resource>
 							</resources>
 						</configuration>

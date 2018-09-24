@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import de.smahoo.jwave.specification.JWaveSpecification;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -360,10 +361,14 @@ public class ZWaveDriver extends Driver{
 	}
 	
 	protected JWaveCommandClassSpecification loadCommandClasses() throws IOException,XmlConvertionException, SAXException, ParserConfigurationException{
-		Document doc = null;
-		
+
+
+		return JWaveSpecification.loadDefaultSpecification();
+/*		Document doc = null;
+
 		String str = null;
-		
+
+
 		try {
 			str = new String(jarResource.getResource(FILE_CMD_CLASSES));
 		} catch (Exception exc){
@@ -374,6 +379,7 @@ public class ZWaveDriver extends Driver{
 		
 		JWaveCommandClassSpecification defs = new JWaveCommandClassSpecification(doc);
 		return defs;
+		*/
 	}
 	
 	public String getName(){

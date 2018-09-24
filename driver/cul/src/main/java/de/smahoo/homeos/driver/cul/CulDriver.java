@@ -137,9 +137,6 @@ public final class CulDriver extends Driver{
 		if (elem == null){
 			return init();			
 		}
-		
-
-
 
 		setConnection(elem.getElementsByTagName("connection"));
 

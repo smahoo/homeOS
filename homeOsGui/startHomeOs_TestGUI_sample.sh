@@ -1,2 +1,11 @@
 #!/usr/bin/env bash
-java -Dlogback.configurationFile=config/logback.xml -cp .:lib/common.jar:lib/homeos-core.jar:lib/nrjavaserial.jar:lib/testgui.jar:lib/libsim.jar de/smahoo/homeos/testing/TestHomeOs config-sample.xml
+
+#!/usr/bin/env bash
+
+path="."
+for f in lib/*.jar
+do
+	path="$path:$f";
+done
+
+java -Dlogback.configurationFile=config/logback.xml -cp $path de/smahoo/homeos/testing/TestHomeOs config-sample.xml

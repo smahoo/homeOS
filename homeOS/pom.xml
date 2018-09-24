@@ -17,7 +17,7 @@
 		<dependency>
     		<groupId>com.neuronrobotics</groupId>
     		<artifactId>nrjavaserial</artifactId>
-    		<version>3.7.5</version>
+    		<version>3.14.0</version>
 		</dependency>
 		<dependency>
     		<groupId>javax.mail</groupId>
@@ -52,9 +52,9 @@
 							<artifactItem>
 								<groupId>com.neuronrobotics</groupId>
 								<artifactId>nrjavaserial</artifactId>
-								<version>3.7.5</version>
+								<version>3.14.0</version>
 								<type>jar</type>
-								<overWrite>false</overWrite>
+								<overWrite>true</overWrite>
 								<outputDirectory>${project.build.directory}/lib</outputDirectory>
 								<destFileName>nrjavaserial.jar</destFileName>
 							</artifactItem>

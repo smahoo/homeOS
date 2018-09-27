@@ -71,18 +71,22 @@ public class DriverManager implements DriverEventListener{
 	
 	protected void setAddDeviceMode(){
 		setDriverMode(DriverMode.DRIVER_MODE_ADD_DEVICE);
-		for (Driver driver : this.driverList){
-			dispatchDriverEvent(new DriverEvent(EventType.DRIVER_MODE_CHANGED,driver));
-			driver.driverMode = DriverMode.DRIVER_MODE_ADD_DEVICE;
-			driver.startLearnMode();
+		for (Driver driver : this.driverList) {
+			if (driver.driverMode != DriverMode.DRIVER_MODE_NOT_INITIALIZED) {
+				dispatchDriverEvent(new DriverEvent(EventType.DRIVER_MODE_CHANGED, driver));
+				driver.driverMode = DriverMode.DRIVER_MODE_ADD_DEVICE;
+				driver.startLearnMode();
+			}
 		}
 	}
 	
 	protected void cancelAddDeviceMode(){
 		
 		for (Driver driver : this.driverList){
-			driver.cancelLearnMode();
-			driver.driverMode = DriverMode.DRIVER_MODE_NORMAL;
+			if (driver.driverMode != DriverMode.DRIVER_MODE_NOT_INITIALIZED) {
+				driver.cancelLearnMode();
+				driver.driverMode = DriverMode.DRIVER_MODE_NORMAL;
+			}
 		}
 		setDriverMode(DriverMode.DRIVER_MODE_NORMAL);
 	}
@@ -90,13 +94,17 @@ public class DriverManager implements DriverEventListener{
 	protected void setRemoveDeviceMode(){
 		setDriverMode(DriverMode.DRIVER_MODE_REMOVE_DEVICE);
 		for (Driver driver : this.driverList){
-			driver.startRemoveMode();
+			if (driver.driverMode != DriverMode.DRIVER_MODE_NOT_INITIALIZED) {
+				driver.startRemoveMode();
+			}
 		}
 	}
 	
 	protected void cancelRemoveDeviceMode(){		
 		for (Driver driver : this.driverList){
-			driver.cancelRemoveMode();
+			if (driver.driverMode != DriverMode.DRIVER_MODE_NOT_INITIALIZED) {
+				driver.cancelRemoveMode();
+			}
 		}
 		setDriverMode(DriverMode.DRIVER_MODE_NORMAL);
 	}
@@ -139,7 +147,7 @@ public class DriverManager implements DriverEventListener{
 	
 	@Override
 	public void onDriverEvent(DriverEvent evnt){		
-		System.out.println(evnt.getEventType().name());
+		//System.out.println(evnt.getEventType().name());
 		if (evnt.getEventType() == EventType.DEVICE_ADDED){			
 			System.out.println("DriverManager bekommt mit, dass Geraet hinzugefuegt wurde *freu*");
 			//FIXME: when in Learning mode then cancel learning mode of all other drivers  

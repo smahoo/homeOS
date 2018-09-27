@@ -29,6 +29,11 @@
 			<artifactId>logback-classic</artifactId>
 			<version>1.1.7</version>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.12</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -56,7 +61,7 @@
 								<type>jar</type>
 								<overWrite>true</overWrite>
 								<outputDirectory>${project.build.directory}/lib</outputDirectory>
-								<destFileName>nrjavaserial.jar</destFileName>
+								<destFileName>nrjavaserial-3.14.0.jar</destFileName>
 							</artifactItem>
 							<artifactItem>
 								<groupId>javax.mail</groupId>
@@ -65,8 +70,17 @@
 								<type>jar</type>
 								<overWrite>false</overWrite>
 								<outputDirectory>${project.build.directory}/lib</outputDirectory>
-								<destFileName>xmail.jar</destFileName>
+								<destFileName>javax-mail-1.4.jar</destFileName>
 							</artifactItem>
+                            <artifactItem>
+								<groupId>mysql</groupId>
+								<artifactId>mysql-connector-java</artifactId>
+								<version>8.0.12</version>
+                                <type>jar</type>
+                                <overWrite>false</overWrite>
+                                <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                <destFileName>mysql-connector-java-8.0.12.jar</destFileName>
+                            </artifactItem>
 						</artifactItems>
 					</configuration>
 				</plugin>

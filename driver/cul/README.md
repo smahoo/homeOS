@@ -1,7 +1,7 @@
 # configuration
 
-        <driver class="de.smahoo.homeos.driver.cul.CulDriver" autoAddNewDevice="true">
-            <connection baudrate="115200" portname="/dev/tty.usbserial-A70251V0" type="IO_TYPE_SERIAL"/>
-        </driver>
-        
-        
+example 
+
+    <device name="sampleDevice" deviceType="" location="loc12" address="6B22" deviceId="cul_6B22" hidden="false">
+        <property name="" value="">
+    </device>

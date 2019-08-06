@@ -183,7 +183,7 @@
 						</configuration>
 					</execution>
 
-					<!-- Copy Driver Z-Wave with dependencies -->
+					<!-- Copy Driver CUL with dependencies -->
 					<execution>
 						<id>copy-driver-cul</id>
 						<phase>install</phase>

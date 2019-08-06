@@ -3,6 +3,7 @@ package de.smahoo.homeos.testing.simulation;
 import java.util.*;
 
 import de.smahoo.homeos.device.Device;
+import de.smahoo.homeos.driver.DriverMode;
 import de.smahoo.homeos.simulation.devices.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,16 +49,14 @@ public class SimDevDriver extends Driver{
 
 		
 		
-		if (elem == null){
-			return true;
-		}
+
 		dispatchDriverEvent(new DriverEvent(EventType.DRIVER_INITIALIZING,this));
 		boolean result = true;
-		
+
 		if (elem.hasChildNodes()){
 			result = initDevices(elem.getChildNodes());
 		}
-				
+		driverMode = DriverMode.DRIVER_MODE_NORMAL;
 		return result;
 	}
 	

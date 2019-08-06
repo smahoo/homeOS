@@ -12,8 +12,6 @@ public class CommProvider {
 		CommPortIdentifier portIdentifier;
 
 		try {
-
-
 	        portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
 	    } catch (NoSuchPortException exc){
 	        	exc.printStackTrace();

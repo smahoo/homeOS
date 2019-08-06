@@ -208,9 +208,9 @@ public class DataBaseManager{
 			
 			String query = "CREATE TABLE IF NOT EXISTS locations "+
 					"( id int NOT NULL AUTO_INCREMENT,"+		
-					"locationId varchar(255) NOT NULL,"+
+					"locationId varchar(25) NOT NULL,"+
 					"locationName varchar(255) NOT NULL,"+
-					"locationType varchar(255) NOT NULL,"+
+					"locationType varchar(25) NOT NULL,"+
 					"parentLocation int NULL,"+			
 					"UNIQUE (locationId),"+
 				    "PRIMARY KEY (id)"+					
@@ -238,9 +238,9 @@ public class DataBaseManager{
 			
 			String query = "CREATE TABLE IF NOT EXISTS devices "+
 					"( id int NOT NULL AUTO_INCREMENT,"+
-					"deviceId varchar(255) NOT NULL,"+					
+					"deviceId varchar(25) NOT NULL,"+
 					"deviceName varchar(255) NOT NULL,"+					
-					"locationId varchar(255) NULL,"+
+					"locationId varchar(25) NULL,"+
 					"isHidden tinyint(1) NOT NULL default 0,"+
 					"isRole tinyint(1) NOT NULL default 0,"+
 					"UNIQUE (deviceId),"+
@@ -578,7 +578,7 @@ public class DataBaseManager{
 		Connection conn = null;
 		dispatchDataBaseManagerEvent(new DataBaseManagerEvent(EventType.CONNECTING,"Connecting to mysql '"+serverIp+"'."));
 		try {
-			String connString = "jdbc:mysql://"+serverIp+":3306/"+dbname+"?user="+username+"&password="+password;
+			String connString = "jdbc:mysql://"+serverIp+":3306/"+dbname+"?user="+username+"&password="+password+"&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 			System.out.println("   Connecting to mysql server");
 			conn = DriverManager.getConnection(connString);
 			System.out.println("   Connected");

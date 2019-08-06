@@ -7,5 +7,3 @@ do
 done
 
 java -Dlogback.configurationFile=config/logback.xml -cp $path de/smahoo/homeos/kernel/HomeOs config-sample.xml
-
-java -Dlogback.configurationFile=config/logback.xml -cp $path de/smahoo/kernel/HomeOs config-sample.xml

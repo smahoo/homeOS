@@ -137,21 +137,24 @@ public final class CulDriver extends Driver{
 		if (elem == null){
 			return init();			
 		}
-
+		System.out.println("Creating Connection");
 		setConnection(elem.getElementsByTagName("connection"));
-
+		System.out.println("OK - Connection created");
 		if (ioStreams != null) {
 			try {
-
+				System.out.println("initializing CUL Controller)");
 				culController.init(ioStreams.getInputStream(), ioStreams.getOutputStream());
 
 			} catch (Exception exc){
+				exc.printStackTrace();
 				dispatchDriverEvent(new DriverEvent(EventType.ERROR,this,"unable to initialize controller -> "+exc.getMessage()));
 			}
 		} else {
+
 			dispatchDriverEvent(new DriverEvent(EventType.ERROR,this,"unable to initialize controller -> Connection could not be established"));
 			return false;
 		}
+		System.out.println("init Devices)");
 		if (elem.hasChildNodes()){
 			initDevices(elem.getElementsByTagName("device"));
 		}
@@ -160,6 +163,7 @@ public final class CulDriver extends Driver{
 			try {
 				autoAddNewDevice = Boolean.parseBoolean(elem.getAttribute("autoAddNewDevice"));
 			} catch (Exception exc){
+				exc.printStackTrace();
 				dispatchDriverEvent(new DriverEvent(EventType.ERROR_CONFIGURATION, this,"\""+elem.getAttribute("autoAddNewDevice")+"\" as value for autoAddNewDevice is not valid!"));
 				return false;
 			}
